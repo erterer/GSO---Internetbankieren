@@ -100,9 +100,10 @@ public class BankTest
         bank.maakOver(1, 2, new Money(500, "EURO"));
     }
     
-    @Test(expected = NumberDoesntExistException.class)  
+    @Test(expected = RuntimeException.class)  
     public void testOvermakenOnbekendeDestinationException() throws Exception {  
-        int rekeningNrSource = bank.openRekening("name", "city");      
+        int rekeningNrSource = bank.openRekening("name", "city");
+        //System.out.println(rekeningNrSource);
         bank.maakOver(rekeningNrSource, 1, new Money(200, "EURO"));
     }
 
@@ -122,12 +123,10 @@ public class BankTest
     public void testGetName()
     {
         System.out.println("getName");
-        Bank instance = null;
-        String expResult = "";
+        Bank instance = bank;
+        String expResult = "ABN Amro";
         String result = instance.getName();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
     
 }
