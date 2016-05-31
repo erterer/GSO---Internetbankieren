@@ -50,7 +50,7 @@ class Rekening implements IRekeningTbvBank {
     }
 
     boolean isTransferPossible(Money bedrag) {
-<span class="nc bnc" id="L53" title="All 2 branches missed.">        return (bedrag.getCents() + saldo.getCents() &gt;= KREDIETLIMIET);</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        return (bedrag.getCents() + saldo.getCents() &gt;= KREDIETLIMIET);</span>
     }
 
     public IKlant getEigenaar() {
@@ -62,11 +62,11 @@ class Rekening implements IRekeningTbvBank {
     }
 
     public boolean muteer(Money bedrag) {
-<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (bedrag.getCents() == 0) {</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (bedrag.getCents() == 0) {</span>
 <span class="nc" id="L66">            throw new RuntimeException(&quot; bedrag = 0 bij aanroep 'muteer'&quot;);</span>
         }
 
-<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (isTransferPossible(bedrag)) {</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (isTransferPossible(bedrag)) {</span>
 <span class="nc" id="L70">            saldo = Money.sum(saldo, bedrag);</span>
 <span class="nc" id="L71">            return true;</span>
         }

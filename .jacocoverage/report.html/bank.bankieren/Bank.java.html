@@ -35,9 +35,9 @@ public class Bank implements IBank {
 	}
 
 	private IKlant getKlant(String name, String city) {
-<span class="pc bpc" id="L38" title="1 of 2 branches missed.">		for (IKlant k : clients) {</span>
-<span class="nc bnc" id="L39" title="All 4 branches missed.">			if (k.getNaam().equals(name) &amp;&amp; k.getPlaats().equals(city))</span>
-<span class="nc" id="L40">				return k;</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">		for (IKlant k : clients) {</span>
+<span class="pc bpc" id="L39" title="2 of 4 branches missed.">			if (k.getNaam().equals(name) &amp;&amp; k.getPlaats().equals(city))</span>
+<span class="fc" id="L40">				return k;</span>
 <span class="nc" id="L41">		}</span>
 <span class="fc" id="L42">		IKlant klant = new Klant(name, city);</span>
 <span class="fc" id="L43">		clients.add(klant);</span>
@@ -50,18 +50,18 @@ public class Bank implements IBank {
 
 	public boolean maakOver(int source, int destination, Money money)
 			throws NumberDoesntExistException {
-<span class="nc bnc" id="L53" title="All 2 branches missed.">		if (source == destination)</span>
-<span class="nc" id="L54">			throw new RuntimeException(</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">		if (source == destination)</span>
+<span class="fc" id="L54">			throw new RuntimeException(</span>
 					&quot;cannot transfer money to your own account&quot;);
-<span class="nc bnc" id="L56" title="All 2 branches missed.">		if (!money.isPositive())</span>
-<span class="nc" id="L57">			throw new RuntimeException(&quot;money must be positive&quot;);</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">		if (!money.isPositive())</span>
+<span class="fc" id="L57">			throw new RuntimeException(&quot;money must be positive&quot;);</span>
 
-<span class="nc" id="L59">		IRekeningTbvBank source_account = (IRekeningTbvBank) getRekening(source);</span>
-<span class="nc bnc" id="L60" title="All 2 branches missed.">		if (source_account == null)</span>
-<span class="nc" id="L61">			throw new NumberDoesntExistException(&quot;account &quot; + source</span>
+<span class="fc" id="L59">		IRekeningTbvBank source_account = (IRekeningTbvBank) getRekening(source);</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">		if (source_account == null)</span>
+<span class="fc" id="L61">			throw new NumberDoesntExistException(&quot;account &quot; + source</span>
 					+ &quot; unknown at &quot; + name);
 
-<span class="nc" id="L64">		Money negative = Money.difference(new Money(0, money.getCurrency()),</span>
+<span class="fc" id="L64">		Money negative = Money.difference(new Money(0, money.getCurrency()),</span>
 				money);
 <span class="nc" id="L66">		boolean success = source_account.muteer(negative);</span>
 <span class="nc bnc" id="L67" title="All 2 branches missed.">		if (!success)</span>
@@ -80,7 +80,7 @@ public class Bank implements IBank {
 
 	@Override
 	public String getName() {
-<span class="nc" id="L83">		return name;</span>
+<span class="fc" id="L83">		return name;</span>
 	}
 
 }
