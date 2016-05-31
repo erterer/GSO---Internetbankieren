@@ -18,7 +18,7 @@ class Rekening implements IRekeningTbvBank {
      * @param currency de munteenheid waarin het saldo is uitgedrukt
      */
     Rekening(int number, IKlant klant, String currency) {
-        this(number, klant, new Money(0, currency));
+        this(number, klant, new Money(100000, currency));
     }
 
     /**
