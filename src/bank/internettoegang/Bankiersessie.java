@@ -22,7 +22,6 @@ public class Bankiersessie extends UnicastRemoteObject implements
 		laatsteAanroep = System.currentTimeMillis();
 		this.reknr = reknr;
 		this.bank = bank;
-		
 	}
 
 	public boolean isGeldig() {

@@ -9,7 +9,7 @@ import fontys.util.NumberDoesntExistException;
 
 public interface IBankiersessie extends Remote {
 	
-	long GELDIGHEIDSDUUR = 600000; 
+	long GELDIGHEIDSDUUR = 5000; 
 	/**
 	 * @returns true als de laatste aanroep van getRekening of maakOver voor deze
 	 *          sessie minder dan GELDIGHEIDSDUUR geleden is
