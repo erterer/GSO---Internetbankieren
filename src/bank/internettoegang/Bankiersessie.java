@@ -6,6 +6,8 @@ import java.rmi.server.UnicastRemoteObject;
 import bank.bankieren.IBank;
 import bank.bankieren.IRekening;
 import bank.bankieren.Money;
+import fontys.observer.BasicPublisher;
+import fontys.observer.RemotePropertyListener;
 
 import fontys.util.InvalidSessionException;
 import fontys.util.NumberDoesntExistException;
@@ -17,11 +19,14 @@ public class Bankiersessie extends UnicastRemoteObject implements
 	private long laatsteAanroep;
 	private int reknr;
 	private IBank bank;
+        private BasicPublisher publisher;
+        private final String prop = "bank";
 
 	public Bankiersessie(int reknr, IBank bank) throws RemoteException {
 		laatsteAanroep = System.currentTimeMillis();
 		this.reknr = reknr;
 		this.bank = bank;
+                this.publisher = new BasicPublisher();
 	}
 
 	public boolean isGeldig() {
@@ -66,4 +71,22 @@ public class Bankiersessie extends UnicastRemoteObject implements
 		UnicastRemoteObject.unexportObject(this, true);
 	}
 
+        @Override
+        public void addListener(RemotePropertyListener listener, String property) throws RemoteException {
+            this.publisher.addListener(listener, property);
+        }
+
+        @Override
+        public void removeListener(RemotePropertyListener listener, String property) throws RemoteException {
+            this.publisher.removeListener(listener, property);
+        }
+        
+        @Override
+        public void update() throws RemoteException {
+            try {
+                publisher.inform(this, prop, null, this.getRekening());
+            } catch (InvalidSessionException ex) {
+                System.out.println("InvalidSessionException ex: " + ex.getMessage());
+            }
+        }
 }
