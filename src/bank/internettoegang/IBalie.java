@@ -2,8 +2,8 @@ package bank.internettoegang;
 
 import java.rmi.*;
 
-
-public interface IBalie extends Remote {
+public interface IBalie extends Remote 
+{
   /**
    * creatie van een nieuwe bankrekening; het gegenereerde bankrekeningnummer is
    * identificerend voor de nieuwe bankrekening en heeft een saldo van 0 euro
@@ -29,5 +29,12 @@ public interface IBalie extends Remote {
    */
   IBankiersessie logIn(String accountnaam, String wachtwoord) throws RemoteException;
 
+  /**
+   * Gets de bankiersessie met het juiste rekeningnummer
+   * @param reknr
+   * @return
+   * @throws RemoteException 
+   */
+  IBankiersessie getBankiersessie(int reknr) throws RemoteException;
 }
 

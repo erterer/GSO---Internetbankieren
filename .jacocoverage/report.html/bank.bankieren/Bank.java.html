@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Bank.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;BankierenNoObserverFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">bank.bankieren</a> &gt; <span class="el_source">Bank.java</span></div><h1>Bank.java</h1><pre class="source lang-java linenums">package bank.bankieren;
 
+import bank.internettoegang.Balie;
+import bank.internettoegang.IBalie;
+import bank.internettoegang.IBankiersessie;
 import fontys.util.*;
-
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
 import java.util.*;
 
-public class Bank implements IBank {
+public class Bank extends UnicastRemoteObject implements IBank  {
+
 	/**
 	 * 
 	 */
@@ -14,102 +19,184 @@ public class Bank implements IBank {
 	private Collection&lt;IKlant&gt; clients;
 	private int nieuwReknr;
 	private String name;
+        private ICentraleBank centraleBank;
+        private IBalie balie;
 
-<span class="fc" id="L18">	public Bank(String name) {</span>
-<span class="fc" id="L19">		accounts = new HashMap&lt;Integer,IRekeningTbvBank&gt;();</span>
-<span class="fc" id="L20">		clients = new ArrayList&lt;IKlant&gt;();</span>
-<span class="fc" id="L21">		nieuwReknr = 100000000;	</span>
-<span class="fc" id="L22">		this.name = name;	</span>
-<span class="fc" id="L23">	}</span>
+<span class="nc" id="L25">	public Bank(String name, ICentraleBank cb) throws RemoteException {</span>
+<span class="nc" id="L26">		accounts = new HashMap&lt;Integer,IRekeningTbvBank&gt;();</span>
+<span class="nc" id="L27">		clients = new ArrayList&lt;IKlant&gt;();</span>
+<span class="nc" id="L28">		this.name = name;</span>
+<span class="nc" id="L29">                nieuwReknr = 100000000;</span>
+<span class="nc bnc" id="L30" title="All 22 branches missed.">                switch (name) {</span>
+                    case &quot;RaboBank&quot;:
+<span class="nc" id="L32">                        nieuwReknr = 100000000;</span>
+<span class="nc" id="L33">                        break;</span>
+                    case &quot;ING&quot;:
+<span class="nc" id="L35">                        nieuwReknr = 200000000;</span>
+<span class="nc" id="L36">                        break;</span>
+                    case &quot;SNS&quot;:
+<span class="nc" id="L38">                        nieuwReknr = 300000000;</span>
+<span class="nc" id="L39">                        break;</span>
+                    case &quot;ABN AMRO&quot;:
+<span class="nc" id="L41">                        nieuwReknr = 400000000;</span>
+<span class="nc" id="L42">                        break;</span>
+                    case &quot;ASN&quot;:
+<span class="nc" id="L44">                        nieuwReknr = 500000000;</span>
+                        break;
+                }
+                
+<span class="nc" id="L48">                centraleBank = cb;</span>
+                //cb.addBank(this);
+<span class="nc" id="L50">	}</span>
 
 	public int openRekening(String name, String city) {
-<span class="fc bfc" id="L26" title="All 4 branches covered.">		if (name.equals(&quot;&quot;) || city.equals(&quot;&quot;))</span>
-<span class="fc" id="L27">			return -1;</span>
+<span class="nc bnc" id="L53" title="All 4 branches missed.">		if (name.equals(&quot;&quot;) || city.equals(&quot;&quot;))</span>
+<span class="nc" id="L54">			return -1;</span>
 
-<span class="fc" id="L29">		IKlant klant = getKlant(name, city);</span>
-<span class="fc" id="L30">		IRekeningTbvBank account = new Rekening(nieuwReknr, klant, Money.EURO);</span>
-<span class="fc" id="L31">		accounts.put(nieuwReknr,account);</span>
-<span class="fc" id="L32">		nieuwReknr++;</span>
-<span class="fc" id="L33">		return nieuwReknr-1;</span>
+<span class="nc" id="L56">		IKlant klant = getKlant(name, city);</span>
+<span class="nc" id="L57">		IRekeningTbvBank account = new Rekening(nieuwReknr, klant, Money.EURO);</span>
+<span class="nc" id="L58">		accounts.put(nieuwReknr,account);</span>
+<span class="nc" id="L59">		nieuwReknr++;</span>
+<span class="nc" id="L60">		return nieuwReknr-1;</span>
 	}
 
 	private IKlant getKlant(String name, String city) {
-<<<<<<< HEAD
-<span class="fc bfc" id="L38" title="All 2 branches covered.">		for (IKlant k : clients) {</span>
-<span class="pc bpc" id="L39" title="2 of 4 branches missed.">			if (k.getNaam().equals(name) &amp;&amp; k.getPlaats().equals(city))</span>
-<span class="fc" id="L40">				return k;</span>
-<span class="nc" id="L41">		}</span>
-<span class="fc" id="L42">		IKlant klant = new Klant(name, city);</span>
-<span class="fc" id="L43">		clients.add(klant);</span>
-<span class="fc" id="L44">		return klant;</span>
-=======
-<span class="fc bfc" id="L37" title="All 2 branches covered.">		for (IKlant k : clients) {</span>
-<span class="pc bpc" id="L38" title="2 of 4 branches missed.">			if (k.getNaam().equals(name) &amp;&amp; k.getPlaats().equals(city))</span>
-<span class="fc" id="L39">				return k;</span>
-<span class="nc" id="L40">		}</span>
-<span class="fc" id="L41">		IKlant klant = new Klant(name, city);</span>
-<span class="fc" id="L42">		clients.add(klant);</span>
-<span class="fc" id="L43">		return klant;</span>
->>>>>>> origin/master
+<span class="nc bnc" id="L64" title="All 2 branches missed.">		for (IKlant k : clients) {</span>
+<span class="nc bnc" id="L65" title="All 4 branches missed.">			if (k.getNaam().equals(name) &amp;&amp; k.getPlaats().equals(city))</span>
+<span class="nc" id="L66">				return k;</span>
+<span class="nc" id="L67">		}</span>
+<span class="nc" id="L68">		IKlant klant = new Klant(name, city);</span>
+<span class="nc" id="L69">		clients.add(klant);</span>
+<span class="nc" id="L70">		return klant;</span>
+                
 	}
 
 	public IRekening getRekening(int nr) {
-<span class="fc" id="L47">		return accounts.get(nr);</span>
+<span class="nc" id="L75">		return accounts.get(nr);</span>
 	}
 
 	public boolean maakOver(int source, int destination, Money money)
 			throws NumberDoesntExistException {
-<<<<<<< HEAD
-<span class="fc bfc" id="L53" title="All 2 branches covered.">		if (source == destination)</span>
-<span class="fc" id="L54">			throw new RuntimeException(</span>
-					&quot;cannot transfer money to your own account&quot;);
-<span class="fc bfc" id="L56" title="All 2 branches covered.">		if (!money.isPositive())</span>
-<span class="fc" id="L57">			throw new RuntimeException(&quot;money must be positive&quot;);</span>
-
-<span class="fc" id="L59">		IRekeningTbvBank source_account = (IRekeningTbvBank) getRekening(source);</span>
-<span class="fc bfc" id="L60" title="All 2 branches covered.">		if (source_account == null)</span>
-<span class="fc" id="L61">			throw new NumberDoesntExistException(&quot;account &quot; + source</span>
-					+ &quot; unknown at &quot; + name);
-
-<span class="fc" id="L64">		Money negative = Money.difference(new Money(0, money.getCurrency()),</span>
-=======
-<span class="fc bfc" id="L52" title="All 2 branches covered.">		if (source == destination)</span>
-<span class="fc" id="L53">			throw new RuntimeException(</span>
-					&quot;cannot transfer money to your own account&quot;);
-<span class="fc bfc" id="L55" title="All 2 branches covered.">		if (!money.isPositive())</span>
-<span class="fc" id="L56">			throw new RuntimeException(&quot;money must be positive&quot;);</span>
-
-<span class="fc" id="L58">		IRekeningTbvBank source_account = (IRekeningTbvBank) getRekening(source);</span>
-<span class="fc bfc" id="L59" title="All 2 branches covered.">		if (source_account == null)</span>
-<span class="fc" id="L60">			throw new NumberDoesntExistException(&quot;account &quot; + source</span>
-					+ &quot; unknown at &quot; + name);
-
-<span class="fc" id="L63">		Money negative = Money.difference(new Money(0, money.getCurrency()),</span>
->>>>>>> origin/master
+            
+<span class="nc" id="L81">            Money negative = Money.difference(new Money(0, money.getCurrency()),</span>
 				money);
-<span class="nc" id="L65">		boolean success = source_account.muteer(negative);</span>
-<span class="nc bnc" id="L66" title="All 2 branches missed.">		if (!success)</span>
-<span class="nc" id="L67">			return false;</span>
+            
+<span class="nc bnc" id="L84" title="All 2 branches missed.">		if (source == destination)</span>
+<span class="nc" id="L85">			throw new RuntimeException(</span>
+					&quot;cannot transfer money to your own account&quot;);
+<span class="nc bnc" id="L87" title="All 2 branches missed.">		if (!money.isPositive())</span>
+<span class="nc" id="L88">			throw new RuntimeException(&quot;money must be positive&quot;);</span>
 
-<span class="nc" id="L69">		IRekeningTbvBank dest_account = (IRekeningTbvBank) getRekening(destination);</span>
-<span class="nc bnc" id="L70" title="All 2 branches missed.">		if (dest_account == null) </span>
-<span class="nc" id="L71">			throw new NumberDoesntExistException(&quot;account &quot; + destination</span>
-					+ &quot; unknown at &quot; + name);
-<span class="nc" id="L73">		success = dest_account.muteer(money);</span>
+<span class="nc" id="L90">		IRekeningTbvBank source_account = (IRekeningTbvBank) getRekening(source);</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">		if (source_account == null) {</span>
+<span class="nc" id="L92">                    throw new NumberDoesntExistException(&quot;account &quot; + destination</span>
+                    + &quot; unknown at &quot; + name);
+                }
+                
 
-<span class="nc bnc" id="L75" title="All 2 branches missed.">		if (!success) // rollback</span>
-<span class="nc" id="L76">			source_account.muteer(money);</span>
-<span class="nc" id="L77">		return success;</span>
+		
+<span class="nc" id="L98">		boolean success = source_account.muteer(negative);</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">		if (!success)</span>
+<span class="nc" id="L100">			return false;</span>
+
+<span class="nc" id="L102">		IRekeningTbvBank dest_account = (IRekeningTbvBank) getRekening(destination);</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">		if (dest_account == null) </span>
+                {
+<span class="nc" id="L105">                    Bank bank = null;</span>
+                    
+                    try
+                    {
+<span class="nc" id="L109">                        bank = (Bank)centraleBank.getBank(destination);</span>
+                    }
+<span class="nc" id="L111">                    catch(RemoteException ex)</span>
+                    {
+<span class="nc" id="L113">                        System.out.println(&quot;RemoteException: &quot; + ex.getMessage());</span>
+<span class="nc" id="L114">                    }</span>
+                    
+<span class="nc bnc" id="L116" title="All 2 branches missed.">                    if(bank == null) {</span>
+<span class="nc" id="L117">                        source_account.muteer(money);</span>
+<span class="nc" id="L118">			throw new NumberDoesntExistException(&quot;account &quot; + source</span>
+					+ &quot; unknown at every bank&quot;);
+                    }
+                    else {
+<span class="nc bnc" id="L122" title="All 2 branches missed.">                        if(!bank.maakOverAndereBank(destination, money)) {</span>
+<span class="nc" id="L123">                            source_account.muteer(money);</span>
+<span class="nc" id="L124">                            return false;</span>
+                        }
+                        
+                        //bank.balie.updateBankiersessie(destination, money);
+                        //balie.updateBankiersessie(source, money);
+                        try
+                        {
+<span class="nc" id="L131">                            IBankiersessie ibs = bank.getBalie().getBankiersessie(destination);</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">                            if (ibs != null)</span>
+                            {
+<span class="nc" id="L134">                                ibs.update();</span>
+                            }
+                        }
+<span class="nc" id="L137">                        catch (RemoteException ex)</span>
+                        {
+<span class="nc" id="L139">                            System.out.println(&quot;RemoteException: &quot; + ex.getMessage());</span>
+<span class="nc" id="L140">                        }</span>
+                        
+<span class="nc" id="L142">                        return true;</span>
+                    }
+                    
+                }
+			
+<span class="nc" id="L147">		success = dest_account.muteer(money);</span>
+
+<span class="nc bnc" id="L149" title="All 2 branches missed.">		if (!success) // rollback</span>
+<span class="nc" id="L150">			source_account.muteer(money);</span>
+                else
+                {
+                    //balie.updateBankiersessie(destination, money);
+                    //balie.updateBankiersessie(source, money);
+                    
+                    try
+                    {
+<span class="nc" id="L158">                        IBankiersessie ibs = balie.getBankiersessie(destination);</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">                        if (ibs != null)</span>
+                        {
+<span class="nc" id="L161">                            ibs.update();</span>
+                        }
+                    }
+<span class="nc" id="L164">                    catch (RemoteException ex)</span>
+                    {
+<span class="nc" id="L166">                        System.out.println(&quot;RemoteException: &quot; + ex.getMessage());</span>
+<span class="nc" id="L167">                    }</span>
+                }
+                
+<span class="nc" id="L170">		return success;</span>
 	}
+        
+        public boolean maakOverAndereBank(int destination, Money money){
+<span class="nc" id="L174">		Money negative = Money.difference(new Money(0, money.getCurrency()),</span>
+				money);
+		boolean success;
+
+<span class="nc" id="L178">		IRekeningTbvBank dest_account = (IRekeningTbvBank) getRekening(destination);</span>
+
+<span class="nc" id="L180">		success = dest_account.muteer(money);</span>
+
+<span class="nc" id="L182">		return success;</span>
+        }
 
 	@Override
 	public String getName() {
-<<<<<<< HEAD
-<span class="fc" id="L83">		return name;</span>
-=======
-<span class="nc" id="L82">		return name;</span>
->>>>>>> origin/master
+<span class="nc" id="L187">		return name;</span>
 	}
-
+        
+        @Override
+        public IBalie getBalie()
+        {
+<span class="nc" id="L193">            return this.balie;</span>
+        }
+        
+        @Override
+        public void addBalie(IBalie balie)
+        {
+<span class="nc" id="L199">            this.balie = balie;</span>
+<span class="nc" id="L200">        }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

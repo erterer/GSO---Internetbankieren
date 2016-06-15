@@ -1,7 +1,7 @@
 package bank.bankieren;
 
-class Rekening implements IRekeningTbvBank {
-
+public class Rekening implements IRekeningTbvBank 
+{
     private static final long serialVersionUID = 7221569686169173632L;
     private static final int KREDIETLIMIET = -10000;
     private int nr;
@@ -17,8 +17,10 @@ class Rekening implements IRekeningTbvBank {
      * @param klant de eigenaar van deze rekening
      * @param currency de munteenheid waarin het saldo is uitgedrukt
      */
-    Rekening(int number, IKlant klant, String currency) {
-        this(number, klant, new Money(100000, currency));
+    Rekening(int number, IKlant klant, String currency) 
+    {
+        this(number, klant, new Money(0, currency));
+        this.muteer(new Money(1000, "\u20AC"));
     }
 
     /**
@@ -31,42 +33,51 @@ class Rekening implements IRekeningTbvBank {
      * @param city de woonplaats van de eigenaar
      * @param currency de munteenheid waarin het saldo is uitgedrukt
      */
-    Rekening(int number, IKlant klant, Money saldo) {
+    Rekening(int number, IKlant klant, Money saldo) 
+    {
         this.nr = number;
         this.eigenaar = klant;
         this.saldo = saldo;
     }
 
-    public boolean equals(Object obj) {
+    public boolean equals(Object obj) 
+    {
         return nr == ((IRekening) obj).getNr();
     }
 
-    public int getNr() {
+    public int getNr() 
+    {
         return nr;
     }
 
-    public String toString() {
+    public String toString() 
+    {
         return nr + ": " + eigenaar.toString();
     }
 
-    boolean isTransferPossible(Money bedrag) {
+    boolean isTransferPossible(Money bedrag) 
+    {
         return (bedrag.getCents() + saldo.getCents() >= KREDIETLIMIET);
     }
 
-    public IKlant getEigenaar() {
+    public IKlant getEigenaar() 
+    {
         return eigenaar;
     }
 
-    public Money getSaldo() {
+    public Money getSaldo() 
+    {
         return saldo;
     }
 
-    public boolean muteer(Money bedrag) {
-        if (bedrag.getCents() == 0) {
+    public boolean muteer(Money bedrag) 
+    {
+        if (bedrag.getCents() == 0) 
+        {
             throw new RuntimeException(" bedrag = 0 bij aanroep 'muteer'");
         }
-
-        if (isTransferPossible(bedrag)) {
+        if (isTransferPossible(bedrag)) 
+        {
             saldo = Money.sum(saldo, bedrag);
             return true;
         }
@@ -74,7 +85,8 @@ class Rekening implements IRekeningTbvBank {
     }
 
     @Override
-    public int getKredietLimietInCenten() {
+    public int getKredietLimietInCenten() 
+    {
         return KREDIETLIMIET;
     }
 }

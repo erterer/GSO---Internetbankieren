@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BasicPublisher.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;BankierenNoObserverFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">fontys.observer</a> &gt; <span class="el_source">BasicPublisher.java</span></div><h1>BasicPublisher.java</h1><pre class="source lang-java linenums">package fontys.observer;
+
+import java.util.*;
+import java.beans.*;
+
+/**
+ * &lt;p&gt;Title: &lt;/p&gt;
+ *
+ * &lt;p&gt;Description: &lt;/p&gt;
+ *
+ * &lt;p&gt;Copyright: Copyright (c) 2005&lt;/p&gt;
+ *
+ * &lt;p&gt;Company: Fontys Hogeschool Informatica&lt;/p&gt;
+ *
+ * @author Frank Peeters
+ * @version 1.1
+ * TreeSet is vervangen door HashSet; het veld allListeners is verwijderd
+ */
+/**
+ * @author prs
+ *
+ */
+public class BasicPublisher implements Publisher {
+
+  /**
+   * de listeners die onder de null-String staan geregistreerd zijn listeners
+   * die op alle properties zijn geabonneerd
+   */
+  private HashMap&lt;String,Set&lt;RemotePropertyListener&gt;&gt; listenersTable;
+
+<span class="nc" id="L31">  public BasicPublisher() {</span>
+<span class="nc" id="L32">    listenersTable = new HashMap&lt;String,Set&lt;RemotePropertyListener&gt;&gt;();</span>
+<span class="nc" id="L33">  }</span>
+
+  public void addListener(RemotePropertyListener listener, String property) {
+<span class="nc" id="L36">    Set&lt;RemotePropertyListener&gt; thisPropertyListeners = listenersTable.get(property);</span>
+<span class="nc bnc" id="L37" title="All 2 branches missed.">    if (thisPropertyListeners == null) {</span>
+<span class="nc" id="L38">      thisPropertyListeners = new HashSet&lt;RemotePropertyListener&gt;();</span>
+<span class="nc" id="L39">      listenersTable.put(property, thisPropertyListeners);</span>
+    }
+<span class="nc" id="L41">    thisPropertyListeners.add(listener);</span>
+<span class="nc" id="L42">  }</span>
+
+  public void removeListener(RemotePropertyListener listener, String property) {
+<span class="nc" id="L45">    Set&lt;RemotePropertyListener&gt; thisPropertyListeners = listenersTable.get(property);</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">    if (thisPropertyListeners != null) thisPropertyListeners.remove(listener);</span>
+
+<span class="nc bnc" id="L48" title="All 2 branches missed.">    if (property == null) {</span>
+<span class="nc" id="L49">      Set&lt;String&gt; keyset = listenersTable.keySet();</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">      for (String key : keyset) {</span>
+<span class="nc" id="L51">        listenersTable.get(key).remove(listener);</span>
+<span class="nc" id="L52">      }</span>
+    }
+<span class="nc" id="L54">  }</span>
+
+  public void removeAllListeners() {
+<span class="nc" id="L57">    listenersTable.clear();</span>
+<span class="nc" id="L58">  }</span>
+
+  /**
+   * alle listeners voor property en de listeners met een algemeen abonnement krijgen
+   * een aanroep van propertyChange
+   * @param source de publisher 
+   * @param property de eigenschap van de publisher
+   * @param oldValue oorspronkelijke waarde van de property van de publisher
+   * @param newValue nieuwe waarde van de property van de publisher
+   */
+  public void inform(Object source, String property, Object oldValue, Object newValue) {
+    Set&lt;RemotePropertyListener&gt; alertable;
+<span class="nc" id="L70">    alertable = listenersTable.get(property);</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">    if (alertable==null) {</span>
+<span class="nc" id="L72">      alertable = new HashSet&lt;RemotePropertyListener&gt;();</span>
+    }
+<span class="nc bnc" id="L74" title="All 2 branches missed.">    if (property!=null) {</span>
+<span class="nc" id="L75">          Set&lt;RemotePropertyListener&gt; generalListeners = listenersTable.get(null);</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">      if (generalListeners!=null) alertable.addAll(generalListeners);</span>
+    }
+
+<span class="nc bnc" id="L79" title="All 2 branches missed.">    for (RemotePropertyListener listener : alertable) {</span>
+      try {
+<span class="nc" id="L81">        listener.propertyChange(new PropertyChangeEvent(source, property, oldValue, newValue));</span>
+      }
+<span class="nc" id="L83">      catch (java.rmi.ConnectException exc) {</span>
+<span class="nc" id="L84">        removeListener(listener,property);</span>
+<span class="nc" id="L85">        exc.printStackTrace();</span>
+      }
+<span class="nc" id="L87">      catch (java.rmi.NoSuchObjectException exc) {</span>
+<span class="nc" id="L88">        removeListener(listener,property);</span>
+<span class="nc" id="L89">        exc.printStackTrace();</span>
+      }
+<span class="nc" id="L91">      catch (java.rmi.RemoteException exc) {</span>
+<span class="nc" id="L92">        exc.printStackTrace();</span>
+<span class="nc" id="L93">      }</span>
+<span class="nc" id="L94">    }</span>
+<span class="nc" id="L95">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

@@ -1,42 +1,42 @@
 package bank.bankieren;
 
-class Klant implements IKlant {
+public class Klant implements IKlant 
+{
+    private static final long serialVersionUID = -6216851042931199453L;
+    private String naam;
+    private String plaats;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6216851042931199453L;
+    public Klant(String naam, String plaats) 
+    {
+        this.naam = naam;
+        this.plaats = plaats;
+    }
 
-	private String naam;
+    public String getNaam() 
+    {
+        return naam;
+    }
 
-	private String plaats;
+    public String getPlaats() 
+    {
+        return plaats;
+    }
 
-	public Klant(String naam, String plaats) {
-		this.naam = naam;
-		this.plaats = plaats;
-	}
+    public int compareTo(IKlant arg0) 
+    {
+        IKlant klant = (IKlant) arg0;
+        int comp = naam.compareTo(klant.getNaam());
+        if (comp!=0) return comp;
+        return plaats.compareTo(klant.getPlaats());
+    }
 
-	public String getNaam() {
-		return naam;
-	}
+    public boolean equals(IKlant o) 
+    {
+        return this.compareTo(o)==0;
+    }
 
-	public String getPlaats() {
-		return plaats;
-	}
-
-	public int compareTo(IKlant arg0) {
-		IKlant klant = (IKlant) arg0;
-		int comp = naam.compareTo(klant.getNaam());
-		if (comp!=0) return comp;
-		return plaats.compareTo(klant.getPlaats());
-	}
-	
-	public boolean equals(IKlant o) {
-		return this.compareTo(o)==0;
-	}
-	
-	public String toString() {
-		return naam + " te " + "plaats";
-	}
-
+    public String toString() 
+    {
+        return naam + " te " + plaats;
+    }
 }

@@ -9,13 +9,17 @@ import bank.bankieren.IRekening;
 import bank.bankieren.Money;
 import bank.internettoegang.IBalie;
 import bank.internettoegang.IBankiersessie;
+import fontys.observer.RemotePropertyListener;
 import fontys.util.InvalidSessionException;
 import fontys.util.NumberDoesntExistException;
+import java.beans.PropertyChangeEvent;
 import java.net.URL;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,7 +33,7 @@ import javafx.scene.control.TextField;
  *
  * @author frankcoenen
  */
-<span class="nc" id="L32">public class BankierSessieController implements Initializable {</span>
+public class BankierSessieController extends UnicastRemoteObject implements Initializable, RemotePropertyListener {
 
     @FXML
     private Hyperlink hlLogout;
@@ -47,69 +51,141 @@ import javafx.scene.control.TextField;
     @FXML
     private Button btTransfer;
     @FXML
-
+    
     private TextArea taMessage;
 
     private BankierClient application;
     private IBalie balie;
     private IBankiersessie sessie;
+<span class="nc" id="L60">    private final String prop = &quot;bank&quot;;</span>
 
+    //Dit is hier om &quot;Unsupported exception in default constructor&quot; te voorkomen (-Julius)
+<span class="nc" id="L63">    public BankierSessieController() throws RemoteException {</span>
+<span class="nc" id="L64">    }</span>
+    
     public void setApp(BankierClient application, IBalie balie, IBankiersessie sessie) {
-<span class="nc" id="L58">        this.balie = balie;</span>
-<span class="nc" id="L59">        this.sessie = sessie;</span>
-<span class="nc" id="L60">        this.application = application;</span>
-<span class="nc" id="L61">        IRekening rekening = null;</span>
+<span class="nc" id="L67">        this.balie = balie;</span>
+<span class="nc" id="L68">        this.sessie = sessie;</span>
+        
         try {
-<span class="nc" id="L63">            rekening = sessie.getRekening();</span>
-<span class="nc" id="L64">            tfAccountNr.setText(rekening.getNr() + &quot;&quot;);</span>
-<span class="nc" id="L65">            tfBalance.setText(rekening.getSaldo() + &quot;&quot;);</span>
-<span class="nc" id="L66">            String eigenaar = rekening.getEigenaar().getNaam() + &quot; te &quot;</span>
-<span class="nc" id="L67">                    + rekening.getEigenaar().getPlaats();</span>
-<span class="nc" id="L68">            tfNameCity.setText(eigenaar);</span>
-<span class="nc" id="L69">        } catch (InvalidSessionException ex) {</span>
-<span class="nc" id="L70">            taMessage.setText(&quot;bankiersessie is verlopen&quot;);</span>
-<span class="nc" id="L71">            Logger.getLogger(BankierSessieController.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L71">            this.sessie.addListener(this, prop);</span>
+<span class="nc" id="L72">        } catch (RemoteException ex) {</span>
+<span class="nc" id="L73">            ex.printStackTrace();</span>
+<span class="nc" id="L74">        }</span>
+        
+<span class="nc" id="L76">        this.application = application;</span>
+        
+<span class="nc" id="L78">        IRekening rekening = null;</span>
+        try {
+<span class="nc" id="L80">            rekening = sessie.getRekening();</span>
+<span class="nc" id="L81">            tfAccountNr.setText(rekening.getNr() + &quot;&quot;);</span>
+<span class="nc" id="L82">            tfBalance.setText(rekening.getSaldo() + &quot;&quot;);</span>
+<span class="nc" id="L83">            String eigenaar = rekening.getEigenaar().getNaam() + &quot; te &quot;</span>
+<span class="nc" id="L84">                    + rekening.getEigenaar().getPlaats();</span>
+<span class="nc" id="L85">            tfNameCity.setText(eigenaar);</span>
+<span class="nc" id="L86">        } catch (InvalidSessionException ex) {</span>
+<span class="nc" id="L87">            taMessage.setText(&quot;bankiersessie is verlopen&quot;);</span>
+<span class="nc" id="L88">            Logger.getLogger(BankierSessieController.class.getName()).log(Level.SEVERE, null, ex);</span>
 
-<span class="nc" id="L73">        } catch (RemoteException ex) {</span>
-<span class="nc" id="L74">            taMessage.setText(&quot;verbinding verbroken&quot;);</span>
-<span class="nc" id="L75">            Logger.getLogger(BankierSessieController.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L76">        }</span>
-<span class="nc" id="L77">    }</span>
+<span class="nc" id="L90">        } catch (RemoteException ex) {</span>
+<span class="nc" id="L91">            taMessage.setText(&quot;verbinding verbroken&quot;);</span>
+<span class="nc" id="L92">            Logger.getLogger(BankierSessieController.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L93">        }</span>
+<span class="nc" id="L94">    }</span>
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-<span class="nc" id="L84">    }</span>
+<span class="nc" id="L101">    }</span>
 
     @FXML
     private void logout(ActionEvent event) {
         try {
-<span class="nc" id="L89">            sessie.logUit();</span>
-<span class="nc" id="L90">            application.gotoLogin(balie, &quot;&quot;);</span>
-<span class="nc" id="L91">        } catch (RemoteException e) {</span>
-<span class="nc" id="L92">            e.printStackTrace();</span>
-<span class="nc" id="L93">        }</span>
-<span class="nc" id="L94">    }</span>
+<span class="nc" id="L106">            sessie.logUit();</span>
+<span class="nc" id="L107">            application.gotoLogin(balie, &quot;&quot;);</span>
+<span class="nc" id="L108">        } catch (RemoteException e) {</span>
+<span class="nc" id="L109">            e.printStackTrace();</span>
+<span class="nc" id="L110">        }</span>
+<span class="nc" id="L111">    }</span>
 
     @FXML
     private void transfer(ActionEvent event) {
+        
+<span class="nc" id="L116">        System.out.println(&quot;Starting transfer&quot;);</span>
+        
         try {
-<span class="nc" id="L99">            int from = Integer.parseInt(tfAccountNr.getText());</span>
-<span class="nc" id="L100">            int to = Integer.parseInt(tfToAccountNr.getText());</span>
-<span class="nc bnc" id="L101" title="All 2 branches missed.">            if (from == to) {</span>
-<span class="nc" id="L102">                taMessage.setText(&quot;can't transfer money to your own account&quot;);</span>
+<span class="nc" id="L119">            int from = Integer.parseInt(tfAccountNr.getText());</span>
+<span class="nc" id="L120">            int to = Integer.parseInt(tfToAccountNr.getText());</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            if (from == to) {</span>
+<span class="nc" id="L122">                taMessage.setText(&quot;can't transfer money to your own account&quot;);</span>
             }
-<span class="nc" id="L104">            long centen = (long) (Double.parseDouble(tfAmount.getText()) * 100);</span>
-<span class="nc" id="L105">            sessie.maakOver(to, new Money(centen, Money.EURO));</span>
-<span class="nc" id="L106">        } catch (RemoteException e1) {</span>
-<span class="nc" id="L107">            e1.printStackTrace();</span>
-<span class="nc" id="L108">            taMessage.setText(&quot;verbinding verbroken&quot;);</span>
-<span class="nc" id="L109">        } catch (NumberDoesntExistException | InvalidSessionException e1) {</span>
-<span class="nc" id="L110">            e1.printStackTrace();</span>
-<span class="nc" id="L111">            taMessage.setText(e1.getMessage());</span>
-<span class="nc" id="L112">        }</span>
-<span class="nc" id="L113">    }</span>
+<span class="nc" id="L124">            long centen = (long) (Double.parseDouble(tfAmount.getText()) * 100);</span>
+<span class="nc" id="L125">            boolean success = sessie.maakOver(to, new Money(centen, Money.EURO));</span>
+<span class="nc" id="L126">            taMessage.setText(&quot;Transfer success: &quot; + success);</span>
+<span class="nc" id="L127">        } catch (RemoteException e1) {</span>
+<span class="nc" id="L128">            e1.printStackTrace();</span>
+<span class="nc" id="L129">            taMessage.setText(&quot;verbinding verbroken&quot;);</span>
+<span class="nc" id="L130">        } catch (NumberDoesntExistException | InvalidSessionException e1) {</span>
+<span class="nc" id="L131">            e1.printStackTrace();</span>
+<span class="nc" id="L132">            taMessage.setText(e1.getMessage());</span>
+<span class="nc" id="L133">        }</span>
+        
+<span class="nc" id="L135">        System.out.println(&quot;Transfer complete &quot;);</span>
+<span class="nc" id="L136">    }</span>
+    
+//    public void propertyChange (PropertyChangeEvent evt) throws RemoteException {
+//        BankierSessieController app = this;
+//        Platform.runLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                if(evt.getNewValue() == null) {
+//                    taMessage.setText(&quot;Session expired&quot;);
+//                    try {
+//                        sessie.removeListener();
+//                        
+//                    }
+//                }
+//            }
+//        })
+//    }
+    
+    public void updateSaldo(long cents){
+<span class="nc" id="L155">        tfBalance.setText(Money.EURO + cents/100 + &quot;&quot;);</span>
+<span class="nc" id="L156">    }</span>
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
+<span class="nc" id="L160">        BankierSessieController app = this;</span>
+<span class="nc" id="L161">        Platform.runLater(new Runnable() {</span>
+            @Override
+            public void run() {
+<span class="nc bnc" id="L164" title="All 2 branches missed.">                if (evt.getNewValue() == null) {</span>
+<span class="nc" id="L165">                    taMessage.setText(&quot;Session expired.&quot;);</span>
+                    try {
+<span class="nc" id="L167">                        sessie.removeListener(app, prop);</span>
+<span class="nc" id="L168">                    } catch (RemoteException ex) {</span>
+<span class="nc" id="L169">                        System.out.println(&quot;RemoteException: &quot; + ex.getMessage());</span>
+<span class="nc" id="L170">                    }</span>
+                } else {
+                    try {
+<span class="nc bnc" id="L173" title="All 2 branches missed.">                        if (sessie.isGeldig())</span>
+                        {
+<span class="nc" id="L175">                            IRekening rek = (IRekening) evt.getNewValue();</span>
+<span class="nc" id="L176">                            tfBalance.setText(rek.getSaldo() + &quot;&quot;);</span>
+<span class="nc" id="L177">                        }</span>
+                        else
+                        {
+<span class="nc" id="L180">                            sessie.removeListener(app, prop);</span>
+                        }
+<span class="nc" id="L182">                    } catch (RemoteException ex) {</span>
+<span class="nc" id="L183">                        System.out.println(&quot;RemoteException: &quot; + ex.getMessage());</span>
+<span class="nc" id="L184">                    }</span>
+                }
+<span class="nc" id="L186">            }</span>
+
+        });
+<span class="nc" id="L189">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

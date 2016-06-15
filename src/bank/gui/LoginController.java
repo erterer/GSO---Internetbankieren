@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package bank.gui;
 
 import bank.bankieren.IRekening;
@@ -19,13 +14,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-/**
- * FXML Controller class
- *
- * @author frankcoenen
- */
-public class LoginController implements Initializable {
-
+public class LoginController implements Initializable 
+{
     @FXML
     private TextField tfAccount;
     @FXML
@@ -41,7 +31,8 @@ public class LoginController implements Initializable {
     private IBankiersessie sessie;
     private BankierClient application;
 
-    public void setApp(BankierClient application, IBalie balie, String AccountName) {
+    public void setApp(BankierClient application, IBalie balie, String AccountName) 
+    {
         this.balie = balie;
         this.application = application;
         this.tfAccount.setText(AccountName);
@@ -51,32 +42,40 @@ public class LoginController implements Initializable {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) 
+    {
         taMessages.setText("");
         tfAccount.setPromptText("Acccount");
         tfPassword.setPromptText("Wachtwoord");
     }
 
     @FXML
-    private void login(ActionEvent event) throws InvalidSessionException {
-        try {
+    private void login(ActionEvent event) throws InvalidSessionException 
+    {
+        try 
+        {
             sessie = balie.logIn(tfAccount.getText(), tfPassword.getText());
-            if (sessie == null) {
+            if (sessie == null) 
+            {
                 taMessages.setText("accountname or password not correct");
-            } else {
+            } 
+            else 
+            {
                 IRekening r = sessie.getRekening();
                 System.out.println("Rekening" + r.getSaldo());
                 application.gotoBankierSessie(balie, sessie);
             }
-        } catch (RemoteException e1) {
+        } 
+        catch (RemoteException e1) 
+        {
             taMessages.setText("bad connection with counter");
             e1.printStackTrace();
         }
     }
 
     @FXML
-    private void openAccount(ActionEvent event) {
+    private void openAccount(ActionEvent event) 
+    {
         application.gotoOpenRekening(balie);
     }
-
 }

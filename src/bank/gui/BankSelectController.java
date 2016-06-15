@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package bank.gui;
 
 import bank.internettoegang.IBalie;
@@ -15,16 +10,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 
-/**
- * FXML Controller class
- *
- * @author frankcoenen
- */
-public class BankSelectController implements Initializable {
-
+public class BankSelectController implements Initializable 
+{
     private String bankNaam;
    
     @FXML
@@ -32,7 +20,8 @@ public class BankSelectController implements Initializable {
     
     private BankierClient application;
     
-    public void setApp(BankierClient application){
+    public void setApp(BankierClient application)
+    {
         this.application = application;
     }
 
@@ -40,21 +29,28 @@ public class BankSelectController implements Initializable {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-
+    public void initialize(URL url, ResourceBundle rb) 
+    {
         cbSelectBank.getItems().addAll(FXCollections.observableArrayList("RaboBank", "ING", "SNS", "ABN AMRO", "ASN"));
-        cbSelectBank.valueProperty().addListener(new ChangeListener() {
+        cbSelectBank.valueProperty().addListener(new ChangeListener() 
+        {
             @Override
-            public void changed(ObservableValue ov, Object t, Object t1) {
+            public void changed(ObservableValue ov, Object t, Object t1) 
+            {
                 bankNaam = (String) ov.getValue();
                 IBalie balie =  application.connectToBalie(bankNaam);
-                application.gotoLogin(balie, "");
+                if (balie != null)
+                {
+                    application.gotoLogin(balie, "");
+                }
             }
         }
         );
     }
     
     @FXML
-    private void selectBank(ActionEvent event) {
+    private void selectBank(ActionEvent event) 
+    {
+        
     }
 }

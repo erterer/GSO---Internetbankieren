@@ -23,13 +23,13 @@ public class Money implements Serializable, Comparable&lt;Money&gt; {
 	 * @throws RuntimeException
 	 *             als currency een lege string is
 	 */
-<span class="fc" id="L26">	public Money(long cents, String currency) {</span>
-<span class="pc bpc" id="L27" title="1 of 2 branches missed.">		if (currency.equals(&quot;&quot;))</span>
+<span class="nc" id="L26">	public Money(long cents, String currency) {</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">		if (currency.equals(&quot;&quot;))</span>
 <span class="nc" id="L28">			throw new RuntimeException(&quot;currency may not be the empty string&quot;);</span>
 
-<span class="fc" id="L30">		this.cents=cents;</span>
-<span class="fc" id="L31">		this.currency = currency;</span>
-<span class="fc" id="L32">	}</span>
+<span class="nc" id="L30">		this.cents=cents;</span>
+<span class="nc" id="L31">		this.currency = currency;</span>
+<span class="nc" id="L32">	}</span>
 
 	/**
 	 * 
@@ -47,11 +47,11 @@ public class Money implements Serializable, Comparable&lt;Money&gt; {
 	 *         &lt;b&gt;false&lt;/b&gt;
 	 */
 	public boolean isPositive() {
-<span class="fc bfc" id="L50" title="All 2 branches covered.">		return cents &gt; 0;</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">		return cents &gt; 0;</span>
 	}
 
 	public String getCurrency() {
-<span class="fc" id="L54">		return currency;</span>
+<span class="nc" id="L54">		return currency;</span>
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class Money implements Serializable, Comparable&lt;Money&gt; {
 	}
 
 	public long getCents() {
-<span class="fc" id="L68">		return cents;</span>
+<span class="nc" id="L68">		return cents;</span>
 	}
 
 	/**
@@ -73,11 +73,11 @@ public class Money implements Serializable, Comparable&lt;Money&gt; {
 	 * @returns het verschil tussen m1 en m2
 	 */
 	public static Money difference(Money m1, Money m2) {
-<span class="pc bpc" id="L76" title="1 of 2 branches missed.">		if (!m1.currency.equals(m2.currency))</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">		if (!m1.currency.equals(m2.currency))</span>
 <span class="nc" id="L77">			throw new RuntimeException(&quot;munteenheden in aanroep 'difference' ongelijk, te weten: &quot; +</span>
 					m1.currency + &quot; en &quot; + m2.currency
 					);
-<span class="fc" id="L80">		return new Money(m1.cents-m2.cents, m1.currency);</span>
+<span class="nc" id="L80">		return new Money(m1.cents-m2.cents, m1.currency);</span>
 	}
 
 	/**
@@ -85,18 +85,19 @@ public class Money implements Serializable, Comparable&lt;Money&gt; {
 	 * @returns de som van m1 en m2
 	 */
 	public static Money sum(Money m1, Money m2) {
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">		if (!m1.currency.equals(m2.currency))</span>
-<span class="fc" id="L89">			throw new RuntimeException(&quot;munteenheden in aanroep 'sum' ongelijk, te weten: &quot; +</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">		if (!m1.currency.equals(m2.currency))</span>
+<span class="nc" id="L89">			throw new RuntimeException(&quot;munteenheden in aanroep 'sum' ongelijk, te weten: &quot; +</span>
 					m1.currency + &quot; en &quot; + m2.currency
 					);
 <span class="nc" id="L92">		return new Money(m1.cents+m2.cents, m1.currency);</span>
+                
 	}
 
 	public boolean equals(Object o) {
-<span class="nc bnc" id="L96" title="All 2 branches missed.">		if (!(o instanceof Money))</span>
-<span class="nc" id="L97">			return false;</span>
-<span class="nc" id="L98">		Money m = (Money) o;</span>
-<span class="nc bnc" id="L99" title="All 4 branches missed.">		return this.currency.equals(m.currency) &amp;&amp; this.cents == m.cents;</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">		if (!(o instanceof Money))</span>
+<span class="nc" id="L98">			return false;</span>
+<span class="nc" id="L99">		Money m = (Money) o;</span>
+<span class="nc bnc" id="L100" title="All 4 branches missed.">		return this.currency.equals(m.currency) &amp;&amp; this.cents == m.cents;</span>
 	}
 
 	private String currency;
@@ -104,12 +105,12 @@ public class Money implements Serializable, Comparable&lt;Money&gt; {
 	private long cents;
 
 	public int compareTo(Money o) {
-<span class="nc" id="L107">		Money m = (Money) o;</span>
-<span class="nc bnc" id="L108" title="All 2 branches missed.">		if (!this.currency.equals(m.currency)) </span>
-<span class="nc" id="L109">			throw new RuntimeException(&quot;comparing amounts with different currency is not implemented&quot;);</span>
-<span class="nc bnc" id="L110" title="All 2 branches missed.">		if (this.cents==m.cents) return 0;</span>
-<span class="nc bnc" id="L111" title="All 2 branches missed.">		if (this.cents&lt;m.cents) return -1;</span>
-<span class="nc" id="L112">		else return +1;</span>
+<span class="nc" id="L108">		Money m = (Money) o;</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">		if (!this.currency.equals(m.currency)) </span>
+<span class="nc" id="L110">			throw new RuntimeException(&quot;comparing amounts with different currency is not implemented&quot;);</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">		if (this.cents==m.cents) return 0;</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">		if (this.cents&lt;m.cents) return -1;</span>
+<span class="nc" id="L113">		else return +1;</span>
 		
 	}
 }
