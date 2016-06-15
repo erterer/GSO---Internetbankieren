@@ -28,9 +28,9 @@ public class BasicPublisher implements Publisher {
    */
   private HashMap&lt;String,Set&lt;RemotePropertyListener&gt;&gt; listenersTable;
 
-<span class="nc" id="L31">  public BasicPublisher() {</span>
-<span class="nc" id="L32">    listenersTable = new HashMap&lt;String,Set&lt;RemotePropertyListener&gt;&gt;();</span>
-<span class="nc" id="L33">  }</span>
+<span class="fc" id="L31">  public BasicPublisher() {</span>
+<span class="fc" id="L32">    listenersTable = new HashMap&lt;String,Set&lt;RemotePropertyListener&gt;&gt;();</span>
+<span class="fc" id="L33">  }</span>
 
   public void addListener(RemotePropertyListener listener, String property) {
 <span class="nc" id="L36">    Set&lt;RemotePropertyListener&gt; thisPropertyListeners = listenersTable.get(property);</span>

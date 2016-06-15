@@ -1,9 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LoginController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;BankierenNoObserverFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">bank.gui</a> &gt; <span class="el_source">LoginController.java</span></div><h1>LoginController.java</h1><pre class="source lang-java linenums">/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package bank.gui;
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="nl"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LoginController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;BankierenNoObserverFX&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">bank.gui</a> &gt; <span class="el_source">LoginController.java</span></div><h1>LoginController.java</h1><pre class="source lang-java linenums">package bank.gui;
 
 import bank.bankieren.IRekening;
 import bank.internettoegang.IBalie;
@@ -19,13 +14,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-/**
- * FXML Controller class
- *
- * @author frankcoenen
- */
-<span class="nc" id="L27">public class LoginController implements Initializable {</span>
-
+<span class="nc" id="L17">public class LoginController implements Initializable </span>
+{
     @FXML
     private TextField tfAccount;
     @FXML
@@ -41,43 +31,52 @@ import javafx.scene.control.TextField;
     private IBankiersessie sessie;
     private BankierClient application;
 
-    public void setApp(BankierClient application, IBalie balie, String AccountName) {
-<span class="nc" id="L45">        this.balie = balie;</span>
-<span class="nc" id="L46">        this.application = application;</span>
-<span class="nc" id="L47">        this.tfAccount.setText(AccountName);</span>
-<span class="nc" id="L48">    }</span>
+    public void setApp(BankierClient application, IBalie balie, String AccountName) 
+    {
+<span class="nc" id="L36">        this.balie = balie;</span>
+<span class="nc" id="L37">        this.application = application;</span>
+<span class="nc" id="L38">        this.tfAccount.setText(AccountName);</span>
+<span class="nc" id="L39">    }</span>
 
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-<span class="nc" id="L55">        taMessages.setText(&quot;&quot;);</span>
-<span class="nc" id="L56">        tfAccount.setPromptText(&quot;Acccount&quot;);</span>
-<span class="nc" id="L57">        tfPassword.setPromptText(&quot;Wachtwoord&quot;);</span>
-<span class="nc" id="L58">    }</span>
+    public void initialize(URL url, ResourceBundle rb) 
+    {
+<span class="nc" id="L47">        taMessages.setText(&quot;&quot;);</span>
+<span class="nc" id="L48">        tfAccount.setPromptText(&quot;Acccount&quot;);</span>
+<span class="nc" id="L49">        tfPassword.setPromptText(&quot;Wachtwoord&quot;);</span>
+<span class="nc" id="L50">    }</span>
 
     @FXML
-    private void login(ActionEvent event) throws InvalidSessionException {
-        try {
-<span class="nc" id="L63">            sessie = balie.logIn(tfAccount.getText(), tfPassword.getText());</span>
-<span class="nc bnc" id="L64" title="All 2 branches missed.">            if (sessie == null) {</span>
-<span class="nc" id="L65">                taMessages.setText(&quot;accountname or password not correct&quot;);</span>
-            } else {
-<span class="nc" id="L67">                IRekening r = sessie.getRekening();</span>
-<span class="nc" id="L68">                System.out.println(&quot;Rekening&quot; + r.getSaldo());</span>
-<span class="nc" id="L69">                application.gotoBankierSessie(balie, sessie);</span>
+    private void login(ActionEvent event) throws InvalidSessionException 
+    {
+        try 
+        {
+<span class="nc" id="L57">            sessie = balie.logIn(tfAccount.getText(), tfPassword.getText());</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">            if (sessie == null) </span>
+            {
+<span class="nc" id="L60">                taMessages.setText(&quot;accountname or password not correct&quot;);</span>
+            } 
+            else 
+            {
+<span class="nc" id="L64">                IRekening r = sessie.getRekening();</span>
+<span class="nc" id="L65">                System.out.println(&quot;Rekening&quot; + r.getSaldo());</span>
+<span class="nc" id="L66">                application.gotoBankierSessie(balie, sessie);</span>
             }
-<span class="nc" id="L71">        } catch (RemoteException e1) {</span>
-<span class="nc" id="L72">            taMessages.setText(&quot;bad connection with counter&quot;);</span>
-<span class="nc" id="L73">            e1.printStackTrace();</span>
-<span class="nc" id="L74">        }</span>
-<span class="nc" id="L75">    }</span>
+        } 
+<span class="nc" id="L69">        catch (RemoteException e1) </span>
+        {
+<span class="nc" id="L71">            taMessages.setText(&quot;bad connection with counter&quot;);</span>
+<span class="nc" id="L72">            e1.printStackTrace();</span>
+<span class="nc" id="L73">        }</span>
+<span class="nc" id="L74">    }</span>
 
     @FXML
-    private void openAccount(ActionEvent event) {
+    private void openAccount(ActionEvent event) 
+    {
 <span class="nc" id="L79">        application.gotoOpenRekening(balie);</span>
 <span class="nc" id="L80">    }</span>
-
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

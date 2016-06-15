@@ -7,6 +7,7 @@ package bank.internettoegang;
 
 import bank.bankieren.Bank;
 import bank.bankieren.IBank;
+import bank.bankieren.ICentraleBank;
 import bank.bankieren.IRekening;
 import bank.bankieren.Money;
 import java.rmi.RemoteException;
@@ -25,7 +26,8 @@ import static org.junit.Assert.*;
  */
 public class BankiersessieTest
 {
-
+    ICentraleBank cbank;
+    IBalie balie;
     Bankiersessie bankierSessie;
 
     public BankiersessieTest()
@@ -45,9 +47,9 @@ public class BankiersessieTest
     @Before
     public void setUp() throws RemoteException
     {
-        IBank bank = new Bank("ABN Amro");
+        IBank bank = new Bank("ABN Amro", cbank);
         bank.openRekening("newRekening", "Amsterdam");
-        bankierSessie = new Bankiersessie(100000000, bank);
+        bankierSessie = new Bankiersessie(100000000, bank, balie);
     }
 
     @After
