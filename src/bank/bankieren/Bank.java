@@ -27,19 +27,19 @@ public class Bank extends UnicastRemoteObject implements IBank
         switch (name) 
         {
             case "RaboBank":
-                nieuwReknr = 111111111;
+                nieuwReknr = 100000000;
                 break;
             case "ING":
-                nieuwReknr = 222222222;
+                nieuwReknr = 200000000;
                 break;
             case "SNS":
-                nieuwReknr = 333333333;
+                nieuwReknr = 300000000;
                 break;
             case "ABN AMRO":
-                nieuwReknr = 444444444;
+                nieuwReknr = 400000000;
                 break;
             case "ASN":
-                nieuwReknr = 555555555;
+                nieuwReknr = 500000000;
                 break;
         }
     }
