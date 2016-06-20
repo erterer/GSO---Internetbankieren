@@ -18,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
 
 public class CentraleBalieServer extends Application 
 {
@@ -73,7 +74,7 @@ public class CentraleBalieServer extends Application
     {
         try 
         {
-            CentraleBalieController bankSelect = (CentraleBalieController) replaceSceneContent("Balie.fxml");
+            BalieControllerCustom bankSelect = (BalieControllerCustom) replaceSceneContent("Balie.fxml");
             bankSelect.setApp(this);
         } 
         catch (Exception ex) 

@@ -11,7 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 
-public class CentraleBalieController implements Initializable 
+public class BalieControllerCustom implements Initializable 
 {
     @FXML
     private ComboBox<String> cbSelectBank1;
